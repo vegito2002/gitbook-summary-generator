@@ -1,5 +1,7 @@
 # Simple Gitbook Generator
 
+https://www.gitbook.com/book/vegito2002/gitbook-generator-demo/details
+
 This is a simple script that can turn any directory in your repo into a base folder for your Gitbook.
 
 Read more about folder structure from [here](https://toolchain.gitbook.com/structure.html):
