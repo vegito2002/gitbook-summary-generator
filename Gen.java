@@ -9,15 +9,15 @@ public class Gen {
         add ("book.json");
         add ("regex.md");
     }};
+    static String SUMMARY_HEADER = "# Summary\n\n";
 
     boolean apply_filter = false;
-    boolean DEBUG = true;
+    boolean DEBUG = false;
 
     Map<String, String> matches;
 
-    static String SUMMARY_HEADER = "# Summary\n\n";
 
-    int root_path_len;
+    String root_path;
 
     public Gen (String initial_path, boolean b) {
         File root = null;
@@ -27,7 +27,7 @@ public class Gen {
             System.err.printf ("Root path:%s is invalid, aborting\n", initial_path);
             System.exit (1);
         }
-        root_path_len = initial_path.length ();
+        root_path = initial_path;
         apply_filter = b;
         File[] files = root.listFiles ((d, name) -> !reserved_names.contains (name) && !name.startsWith ("."));
 
@@ -41,10 +41,10 @@ public class Gen {
         StringBuilder summary = new StringBuilder (SUMMARY_HEADER);
         
         for (File file : files) {
-            summary.append (process (file, new StringBuilder (initial_path.equals (".") ? "" : initial_path + "/"), new StringBuilder ()));
+            summary.append (process (file, new StringBuilder (initial_path + "/"), new StringBuilder ()));
         }
 
-        try (BufferedWriter bw = new BufferedWriter (new FileWriter ("SUMMARY.md", false))) {
+        try (BufferedWriter bw = new BufferedWriter (new FileWriter (root_path + "/" + "SUMMARY.md", false))) {
             bw.write (summary.toString ());
         } catch (Exception ex) {
             System.err.printf ("Can't write to SUMMARY.md\n");
@@ -72,12 +72,12 @@ public class Gen {
                 path.setLength (path_old_len);
                 indent.setLength (indent.length () - 4);
             }
-            return String.format ("* [%s](%s)\n", split_name, has_readme ? (path.toString () + split_name + "/README.md").substring (root_path_len + 1) : "") + res.toString ();
+            return String.format ("%s* [%s](%s)\n", indent, split_name, has_readme ? (path.toString () + split_name + "/README.md").substring (root_path.length () + 1) : "") + res.toString ();
         }
         // Base case: process a file (not a directory)
         String full_path = path.toString () + input_file_name;
         if (!input_file_name.equals ("README.md"))
-            res.append (String.format ("%s* [%s](%s)\n", indent, split_name, full_path.substring (root_path_len + 1)));
+            res.append (String.format ("%s* [%s](%s)\n", indent, split_name, full_path.substring (root_path.length () + 1)));
         // actually process the file content text
         if (apply_filter) {
             StringBuilder processed_content = new StringBuilder ();
@@ -89,11 +89,11 @@ public class Gen {
                     if (line.startsWith ("```")) {
                         code = !code;
                     }
-                    if (line.matches ("http[s]?://www.dropbox.com.*?dl=0")) {
+                    if (!code && line.matches ("http[s]?://www.dropbox.com.*((\\?dl=0)|(\\?raw=1)).*")) {
                         line = line.replace ("?dl=0", "?raw=1");
+                        Integer scale = null;
                         if (line.matches (".*\\s+.*")) {
                             String[] tokens = line.split ("\\s+");
-                            Integer scale = null;
                             if (tokens.length >= 2) {
                                 try {
                                     scale = Integer.parseInt (tokens[1]);
@@ -101,9 +101,12 @@ public class Gen {
                                     System.err.printf ("WARNING: %s is not a valid scaling factor and thus is ignored.\n", tokens[1]);
                                 }
                             }
-                            line = String.format ("<img src=\"%s\"%s", line, scale != null ? String.format (" width=\"%d\"", scale) : "");
+                            line = tokens[0];
                         }
+                        line = String.format ("<img src=\"%s\"%s>", line, scale != null ? String.format (" width=\"%d\"", scale) : "");
                     }
+                    if (!code)
+                        line += "  ";
                     processed_content.append (line + "\n");
                 }
                 // ready to write back
@@ -121,7 +124,7 @@ public class Gen {
 
     Map<String, String> loadRegex () {
         Map<String, String> res = new HashMap<> ();
-        try (BufferedReader br = new BufferedReader (new FileReader (new File ("regex.md")))) {
+        try (BufferedReader br = new BufferedReader (new FileReader (new File (root_path + "/regex.md")))) {
             String line = "";
             while ((line = br.readLine ()) != null) {
                 String[] tokens = line.split ("\\s+");
@@ -142,7 +145,7 @@ public class Gen {
     }
 
     String splitName (String name) {
-        if (DEBUG) System.out.printf ("\t\t\t\t\t\t\t\t\tSPLIT (%s) returns ", name);
+        if (DEBUG) System.out.printf ("\t\t\t\t\t\t\t\t\tSPLIT (%s) = ", name);
         if (name.endsWith (".md"))
             name = name.substring (0, name.length () - 3);
         for (String match : matches.keySet ()) {
