@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.*;
 
 public class Gen {
+    /* Reserved file names to be excluded from the processing. Some will be
+    handled specifically later. */
     static Set<String> reserved_names = new HashSet<String> () {{
         add ("README.md");
         add ("SUMMARY.md");
@@ -9,12 +11,17 @@ public class Gen {
         add ("book.json");
         add ("regex.md");
     }};
+    /* Start boilerplate of the SUMMARY.md to be generated. */
     static String SUMMARY_HEADER = "# Summary\n\n";
-
+    /* Stores whether the user wants the file content to be processed. See README
+    for details. */
     boolean apply_filter = false;
-    
-    boolean DEBUG = true;
 
+    static String USAGE_INFO = "java Gen [relative path of base folder root] [true/false: whether to apply file content processing]";
+
+    /* Toggle for debug logging */   
+    boolean DEBUG = true;
+    /* Stores  */
     Map<String, String> matches;
 
 
@@ -160,6 +167,10 @@ public class Gen {
         String path = ".";
         for (int i = 0; i < args.length && i < 2; i++) {
             if (i == 0) {
+                if (args[i].equals ("-h") || args[i].equals ("-help")) {
+                    System.out.println (USAGE_INFO);
+                    System.exit (1);
+                }
                 path = args[0];
             }
             if (i == 1 && args[1].toLowerCase ().equals ("true")) {
