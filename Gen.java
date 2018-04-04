@@ -12,7 +12,8 @@ public class Gen {
     static String SUMMARY_HEADER = "# Summary\n\n";
 
     boolean apply_filter = false;
-    boolean DEBUG = false;
+    
+    boolean DEBUG = true;
 
     Map<String, String> matches;
 
@@ -124,21 +125,19 @@ public class Gen {
 
     Map<String, String> loadRegex () {
         Map<String, String> res = new HashMap<> ();
-        try (BufferedReader br = new BufferedReader (new FileReader (new File (root_path + "/regex.md")))) {
-            String line = "";
-            while ((line = br.readLine ()) != null) {
-                String[] tokens = line.split ("\\s+");
+        try {
+            Scanner scan = new Scanner (new File (root_path + "/regex.md"));
+            while (scan.hasNextLine ()) {
+                String pat = scan.nextLine ();
                 String seperator = " ";
-                if (tokens.length >= 2) {
-                    seperator = tokens[1];
-                }
-                if (res.containsKey (tokens[0]))
-                    System.err.printf ("WARNING: duplicated regex pair for %s detected\n", tokens[0]);
-                res.put (tokens[0], tokens[1]);
+                if (scan.hasNextLine ())
+                    seperator = scan.nextLine ();
+                if (res.containsKey (pat))
+                    System.err.printf ("WARNING: duplicated regex pair for %s detected\n", pat);
+                res.put (pat, seperator);
             }
         } catch (Exception ex) {
             System.err.printf ("No supplied regex pairs detected (regex.md), default settings applied.\n");
-            // TODO: what should \\S be if scanned in from file?
             res.put ("(?<=[^A-Z&&\\S])(?=[A-Z])", " ");
         }
         return res;
