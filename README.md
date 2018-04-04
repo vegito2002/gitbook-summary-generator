@@ -25,7 +25,7 @@ And add a `README.md` and a `book.json`:
 to the root of your repo. The folder `./demo` is ready to be linked to your gitbook.
 
 ## A Little More Explanation
-This is a compact script. All you need is Java for it to work. Copy all `.class` files to a convenient folder, preferably the root of your repo.
+This is a compact script. All you need is Java for it to work. Copy `Gen.class` (or `Gen.java` if you want to compile yourself) to a convenient folder, preferably the root of your repo.
 
 The introduction above aims to get you going as quick as possible. Here are some more explanation. First, please refer to the wonderful documentation [here](https://toolchain.gitbook.com/structure.html) for detailed information. Here I give as little information as possible.
 
@@ -84,32 +84,34 @@ It is not advised to include space in any of the file names. I personally advise
 ### Everything not mentioned yet
 The basic functionality this script provides is **generating `SUMMARY.md`** and **split file names**. There are something additional you can do.
 
-When you supply command line arguments, do make sure to stick something like
+When you supply command line arguments, do make sure to stick to something like
 ```
 $ java Gen demo true
 ```
-In the specified order, where `demo` specifies the `base_to_root` relative path, and `true` specifies that you want the additional file content processing mentioned below to be carried out.
+In the specified order, where `demo` specifies the `base_to_root` relative path, and `true` specifies that you want the additional file content processing mentioned below to be carried out. Both are optional, but you have to specify `demo` (default value is `.` if you are already in the book base folder) before you can supply `true`.
 
-Now, about file content processing, there are purely personal preferences. I personally don't like how newline is handled in github markdown (newline alone does not give you a new line, you have to append two spaces to the end of the line), so I delt with that. Also, I insert dropbox screenshot links like this:
+Now, about file content processing, these are purely personal preferences. I don't like how newline is handled in github markdown (newline alone does not give you a new line, you have to append two spaces to the end of the line), so I delt with that. Also, I constantly insert dropbox screenshot links like this:
 ```
 https://www.dropbox.com/s/gtk56vs39qvjtzi/Screenshot%202018-04-04%2000.32.28.png?dl=0
 ```
 in my markdown files. Instead of writing `![]()` or `<img src="" width="500">` yourself, just leave the line like that, and it will work. 
 
-Such linkes are directed put in your clipboard when you have dropbox on your macbook installed and this configuration enabled:
+Such linkes are automatically put in your clipboard when you have dropbox on your macbook installed and this configuration enabled:
 
 <img src="https://www.dropbox.com/s/7njhvb7udnt9g0m/Screenshot%202018-04-04%2000.34.37.png?raw=1" width="500">
 
-Optionally, you can append a whitespace-separated width-scaling attribute after then url. For example:
+Please Google the corresponding configuration if you are using Window.
+
+Additionally, you can optionally append a whitespace-separated width-scaling attribute after then url. An example in a nutshell:
 ```
 https://www.dropbox.com/s/gtk56vs39qvjtzi/Screenshot%202018-04-04%2000.32.28.png?dl=0 800
 ```
-will be convertedd to
+will be converted to
 ```
 <img src="https://www.dropbox.com/s/gtk56vs39qvjtzi/Screenshot%202018-04-04%2000.32.28.png?raw=1" width="800">
 ```
 
-One final thing, about how the file names is split. You can supply a `regex.md` at the *folder of `Gen` script* so that you can specify the regex rules you want applied to name splitting. You will supply `pattern` and `seperate` pair in the file, which will be used like:
+One final thing, about how the file names is split. You can supply a `regex.md` at the *folder of `Gen` script* so that you can specify the regex rules you want applied to name splitting. You will supply `pattern` and `seperate` pair in the file as alternating lines, which will be used like:
 ```java
 file_name.replaceAll (pattern, seperator);
 ```
@@ -121,7 +123,8 @@ pattern2
 seperator2
 ...
 ```
-in the `regex.md` file in this line-alternating style. If this file is not supplied, the default rule is applied, which is equivalant to having this file:
+in the `regex.md` file in this line-alternating style. Each of the rule pair will be applied sequentially, so you have to organize your logic if you have more than one rules.  
+If this file is not supplied, the default rule is applied, which is virtually equivalant to having this `regex.md` file:
 ```
 (?<=[^A-Z&&\S])(?=[A-Z])
  
