@@ -123,7 +123,7 @@ seperator2
 ```
 in the `regex.md` file in this line-alternating style. If this file is not supplied, the default rule is applied, which is equivalant to having this file:
 ```
-(?<=[^A-Z&&\\S])(?=[A-Z])
+(?<=[^A-Z&&\S])(?=[A-Z])
  
 ```
 The second line only has a space. This rule actually do the `TextOne -> Text One` thing mentioned above. 
