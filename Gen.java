@@ -4,13 +4,14 @@ import java.util.*;
 public class Gen {
     /* Reserved file names to be excluded from the processing. Some will be
     handled specifically later. */
-    static Set<String> reserved_names = new HashSet<String> () {{
-        add ("README.md");
-        add ("SUMMARY.md");
-        add ("GLOSSARY.md");
-        add ("book.json");
-        add ("regex.md");
-    }};
+    static Set<String> reserved_names = new HashSet<> ();
+    static {
+        reserved_names.add ("README.md");
+        reserved_names.add ("SUMMARY.md");
+        reserved_names.add ("GLOSSARY.md");
+        reserved_names.add ("book.json");
+        reserved_names.add ("regex.md");
+    }
     /* Start boilerplate of the SUMMARY.md to be generated. */
     static String SUMMARY_HEADER = "# Summary\n\n";
     /* Stores whether the user wants the file content to be processed. See README
