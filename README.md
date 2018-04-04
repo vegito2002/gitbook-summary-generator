@@ -3,7 +3,11 @@
 This is a simple script that can turn any directory in your repo into a base folder for your Gitbook.
 
 ## What Does This Do?
-[Gitbook](https://www.gitbook.com/) is very useful for writers, or programmers that sometimes write. Organize your markdown files like this:
+[Gitbook](https://www.gitbook.com/) is very useful for writers, or programmers that sometimes write. 
+
+### Getting it to run now
+
+Organize your markdown files like this:
 
 <img src="https://www.dropbox.com/s/uma7ou64rmtqf28/Screenshot%202018-04-03%2023.52.49.png?raw=1" width="300">
 
@@ -23,6 +27,16 @@ And add a `README.md` and a `book.json`:
 }
 ```
 to the root of your repo. The folder `./demo` is ready to be linked to your gitbook.
+
+### List Of Features
+This is a list of features introduced in detail delow
+* Recursively generating `SUMMARY.md`.
+* File name splitting, which allows user-specified regex rules.
+* Arbitrary target position for the book base folder.
+* Full confirmation to official Gitbook documentation specification.
+* Additional file content processing:
+    * Newline handling to avoid github's append-two-spaces-at-end rule
+    * Automatically handling of dropbox direct screenshot link. Additional width-attribute scaling enable.
 
 ## A Little More Explanation
 This is a compact script. All you need is Java for it to work. Copy `Gen.class` (or `Gen.java` if you want to compile yourself) to a convenient folder, preferably the root of your repo.
