@@ -3,7 +3,19 @@
 ## What does this do?
 [Gitbook](https://www.gitbook.com/) is very useful for writers, or programmers that sometimes write. organize your markdown files like this:
 
-<img src="https://www.dropbox.com/s/uma7ou64rmtqf28/Screenshot%202018-04-03%2023.52.49.png?raw=1" width="500">
+<img src="https://www.dropbox.com/s/uma7ou64rmtqf28/Screenshot%202018-04-03%2023.52.49.png?raw=1" width="300">
+
+Suppose this is a folder anywhere in your repo, and this folder's **relative** path to where the `Gen` files are located is `./demo`, then run
+```
+java Gen demo
+```
+or
+```
+java Gen ./demo
+```
+
+
+
 
 https://www.gitbook.com/book/vegito2002/gitbook-generator-demo/details
 

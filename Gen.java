@@ -205,6 +205,11 @@ public class Gen {
                 apply_filter = true;
             }
         }
+        /* If you supplied absolute path, I will convert it to relative path to this folder */
+        int i = 0;
+        while (path.charAt (i) == '/')
+            i++;
+        path = path.substring (i);
         new Gen (path, apply_filter);
     }
 }
