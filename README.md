@@ -36,7 +36,7 @@ This is a list of features introduced in detail below
 * Full confirmation to official Gitbook documentation specification.
 * Additional file content processing:
     * Newline handling to avoid github's append-two-spaces-at-end rule
-    * Automatically handling of dropbox direct screenshot link. Additional width-attribute scaling enable.
+    * Automatically handling of dropbox direct screenshot link. Additional width-attribute scaling enabled.
 
 ## A Little More Explanation
 This is a compact script. All you need is Java for it to work. Copy `Gen.class` (or `Gen.java` if you want to compile yourself) to a convenient folder, preferably the root of your repo.
