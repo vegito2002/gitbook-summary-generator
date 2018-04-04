@@ -26,7 +26,7 @@ And add a `README.md` and a `book.json`:
     "root": "./demo"
 }
 ```
-to the root of your repo. The folder `./demo` is ready to be linked to your gitbook.
+to the **root of your repo**. The folder `./demo` is ready to be linked to your gitbook. Just create a book in Gitbook and link to your repo. 
 
 ### List Of Features
 This is a list of features introduced in detail below
