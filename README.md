@@ -29,7 +29,7 @@ And add a `README.md` and a `book.json`:
 to the root of your repo. The folder `./demo` is ready to be linked to your gitbook.
 
 ### List Of Features
-This is a list of features introduced in detail delow
+This is a list of features introduced in detail below
 * Recursively generating `SUMMARY.md`.
 * File name splitting, which allows user-specified regex rules.
 * Arbitrary target position for the book base folder.
