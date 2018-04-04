@@ -105,14 +105,13 @@ public class Gen {
                 String line = "";
                 boolean code = false;
                 while ((line = br.readLine ()) != null) {
-                    line = line.trim ();
                     // some processing rules should not be applied in listings: track the status
                     if (line.startsWith ("```")) {
                         code = !code;
                     }
                     // process dropbox picture links
-                    if (!code && line.matches ("http[s]?://www.dropbox.com.*((\\?dl=0)|(\\?raw=1)).*")) {
-                        line = line.replace ("?dl=0", "?raw=1");
+                    if (!code && line.trim ().matches ("http[s]?://www.dropbox.com.*((\\?dl=0)|(\\?raw=1)).*")) {
+                        line = line.trim ().replace ("?dl=0", "?raw=1");
                         Integer scale = null;
                         if (line.matches (".*\\s+.*")) {
                             String[] tokens = line.split ("\\s+");
